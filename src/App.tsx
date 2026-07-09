@@ -1,50 +1,16 @@
-import { useState, useRef, useEffect, type JSX } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { RiGlobeLine } from "react-icons/ri";
 import { RiMistFill } from "react-icons/ri";
 import { RiLock2Line } from "react-icons/ri";
 import { RiArrowDownSLine } from "react-icons/ri";
-import { RiCheckboxCircleFill } from "react-icons/ri";
 
-interface IOptionItemProps {
-  label: string;
-  icon: JSX.Element;
-  isSelected?: boolean;
-  isFocused?: boolean;
-  onClick?: () => void;
-  id: string;
-}
+import { OptionItem, type OptionItemProps } from "./components/OptionItem";
+import { cn } from "./utils/utils";
 
-const OptionItems = ({ label, icon, isSelected, isFocused, onClick, id }: IOptionItemProps) => {
-  return (
-    <li
-      role='option'
-      id={id}
-      aria-selected={isSelected}
-      className={
-        "flex cursor-pointer gap-3 rounded-sm p-2 hover:bg-gray-50" +
-        " " +
-        (isSelected ? "items-center justify-between bg-gray-50" : "") +
-        " " +
-        (isFocused ? "bg-gray-100" : "")
-      }
-      onClick={onClick}
-    >
-      {icon}
-      <span className='w-full'>{label}</span>
-      {isSelected && (
-        <RiCheckboxCircleFill
-          className='size-5'
-          aria-hidden='true'
-        />
-      )}
-    </li>
-  );
-};
+type Options = Pick<OptionItemProps, "label" | "icon">;
 
-type TOptions = Pick<IOptionItemProps, "label" | "icon">;
-
-const options: TOptions[] = [
+const options: Options[] = [
   {
     label: "Public",
     icon: <RiGlobeLine className='size-5' />
@@ -163,11 +129,10 @@ function App() {
           <span>Privacy option</span>
 
           <RiArrowDownSLine
-            className={
-              "size-5 transition-transform duration-200 disabled:bg-neutral-100 disabled:shadow-none" +
-              " " +
-              (isOpen ? "rotate-180" : "")
-            }
+            className={cn(
+              "size-5 transition-transform duration-200 disabled:bg-neutral-100 disabled:shadow-none",
+              isOpen && "rotate-180"
+            )}
             aria-hidden='true'
           />
         </button>
@@ -182,7 +147,7 @@ function App() {
             className='flex flex-col gap-2 rounded-lg p-2 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)]'
           >
             {options.map((option, index) => (
-              <OptionItems
+              <OptionItem
                 key={option.label}
                 id={`option-${index}`}
                 label={option.label}
@@ -199,4 +164,4 @@ function App() {
   );
 }
 
-export default App;
+export { App };
